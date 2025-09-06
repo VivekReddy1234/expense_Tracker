@@ -3,7 +3,7 @@ import DashboardLayout from '../../components/layouts/DashboardLayout.jsx'
 import { useUserAuth } from '../../hooks/useUserAuth.jsx'
 import axiosInstance from '../../utils/axiosInstance.js';
 import { API_PATHS } from '../../utils/apiPaths.js';
-import { set } from 'mongoose';
+
 import {LuHandCoins, LuWalletMinimal} from "react-icons/lu";
 import {IoMdCard} from "react-icons/io";
 import { addThousandSeperator } from '../../utils/helper.js';
