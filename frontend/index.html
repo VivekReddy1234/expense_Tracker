@@ -9,5 +9,23 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+
+  const validRoutes = ['/', '/login', '/signup','/dashboard','/income','/expense']; // Add all your app's routes here
+
+  // Get the current path from the URL
+  const currentPath = window.location.pathname;
+
+  // Check if the current path is valid
+  if (!validRoutes.includes(currentPath)) {
+    // Redirect to the home page if the path is invalid
+    window.location.pathname = '/';
+  }
+
+  // Additional logic for handling route refresh errors
+  window.addEventListener('load', () => {
+    console.log('Route validation complete.');
+  });
+</script>
   </body>
 </html>
