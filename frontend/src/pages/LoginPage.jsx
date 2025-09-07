@@ -17,50 +17,43 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
 
-  const handleLogin = async(e) => {
-    e.preventDefault(); 
-  
-      if(!validateEmail(email)) {
-        alert('Please enter a valid email address');
-        return;
-      }
-    
-       if(password.length < 6) {
-        alert('Password must be at least 6 characters long');
-        return;
-      }
-      if(!password){
-        alert('Please enter your password');
-        return;
-      }
+const handleLogin = async (e) => {
+  e.preventDefault(); 
 
-      // api call
-   
-   try{
+  if(!validateEmail(email)) {
+    alert('Please enter a valid email address');
+    return;
+  }
+
+  if(password.length < 6) {
+    alert('Password must be at least 6 characters long');
+    return;
+  }
+
+  try {
     const response = await axiosInstance.post('/api/v1/auth/login', {
       email,
       password
-    },{withCredentials: true});
-  
-    const { user } = response.data;
-    console.log(user);
+    });
 
-      if(user){
-        updateUser(user);
-        navigate("/dashboard");
-      }
-       else{
+    // No need to store token in localStorage anymore!
+    // Just use the cookie that server sets.
+
+    const { user } = response.data; 
+    console.log("Logged in user: ", user);
+
+    if (user) {
+      updateUser(user);   // keep context for UI
+      navigate("/dashboard");
+    } else {
       alert('Login failed');
-    
-     } 
-     }
-   
-    catch(error){
-      console.log(error);
-      alert('Something went wrong');
     }
-     
-  };
+  } catch (error) {
+    console.error(error);
+    alert('Something went wrong');
+  }
+};
+
 
 
 
