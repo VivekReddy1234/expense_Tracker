@@ -43,6 +43,7 @@ const LoginPage = () => {
     },{withCredentials: true});
   
     const { user } = response.data;
+    console.log(user);
 
       if(user){
         updateUser(user);
