@@ -52,13 +52,14 @@ const loginUser = async (req, res) => {
   const user = await User.findOne({ email });
     if (user && (await user.matchPassword(password))) {
       const token = generateToken(user._id);
+      console.log("Token generated is ",token);
         res.cookie("jwt",token,{
           httpOnly:true,
           secure:"true",
           sameSite: "none",
           maxAge: 7*24*60*60*1000
         });
-
+        console.log(res)
         res.json({user});
     } else {
         res.status(401).json({ message: 'Invalid email or password' });

@@ -4,6 +4,8 @@ const User = require('../models/User');
 const protect = async (req, res, next) => {
   try {
     let token;
+  console.log("Incoming cookies:", req.cookies);
+console.log("Authorization header:", req.headers.authorization);
 
     // 1. Check Authorization header
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
