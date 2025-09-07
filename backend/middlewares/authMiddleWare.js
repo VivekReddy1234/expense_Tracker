@@ -7,11 +7,11 @@ const protect = async (req, res, next) => {
   console.log("Incoming cookies:", req.cookies);
 console.log("Authorization header:", req.headers.authorization);
 
-    // 1. Check Authorization header
+
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
     }
-    // 2. Check cookies
+
     else if (req.cookies && req.cookies.jwt) {
       token = req.cookies.jwt;
     }
