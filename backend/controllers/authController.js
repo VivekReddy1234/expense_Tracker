@@ -53,12 +53,14 @@ const loginUser = async (req, res) => {
     if (user && (await user.matchPassword(password))) {
       const token = generateToken(user._id);
       console.log("Token generated is ",token);
-        res.cookie("jwt",token,{
-          httpOnly:true,
-          secure:true,
-          sameSite: "none",
-          maxAge: 7*24*60*60*1000
-        });
+       res.cookie("jwt", token, {
+  httpOnly: true,
+  secure: true, // only HTTPS in prod
+  sameSite: "none", // required for cross-origin
+  path: "/",        // make sure it applies globally
+  maxAge: 7 * 24 * 60 * 60 * 1000
+});
+
         console.log(res)
         res.json({user});
     } else {

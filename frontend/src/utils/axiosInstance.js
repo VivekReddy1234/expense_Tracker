@@ -3,56 +3,40 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const axiosInstance = axios.create({
-  baseURL: BASE_URL, // Replace with your API base URL
-  headers: {    
+  baseURL: BASE_URL,
+  headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  timeout: 5000, // 
-    withCredentials: true 
+  timeout: 5000,
+  withCredentials: true, // ✅ ensure cookies (jwt) are sent automatically
 });
 
+// 🔹 Request interceptor (no localStorage/token needed)
 axiosInstance.interceptors.request.use(
-  (config) => {
-    // You can modify the request config here if needed
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
+  (config) => config,
+  (error) => Promise.reject(error)
+);
+
+// 🔹 Response interceptor
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      console.error("API Error:", error.response.data);
+
+      if (error.response.status === 401) {
+        console.warn("Unauthorized! Redirecting to login...");
+        window.location.href = "/login";
+      }
+    } else if (error.request) {
+      console.error("No response from server:", error.request);
+    } else {
+      console.error("Error setting up request:", error.message);
     }
-    return config;
-  },
-  (error) => {  
+
     return Promise.reject(error);
   }
 );
-
-axiosInstance.defaults.withCredentials = true;
-
-
-
-axiosInstance.interceptors.response.use(
-  (response) => {   
-    return response;
-    },
-  (error) => {  
-    if (error.response) {
-      // Server responded with a status other than 2xx
-      console.error('API Error:', error.response.data);
-      if (error.response.status === 401) {
-        // Handle unauthorized access, e.g., redirect to login
-        console.warn('Unauthorized! Redirecting to login...');
-        window.location.href = '/login'; // Uncomment to enable redirection
-      }
-    } else if (error.request) {
-      // Request was made but no response received
-      console.error('No response from server:', error.request);
-    } else {
-      // Something else happened while setting up the request
-      console.error('Error setting up request:', error.message);
-    }
-    return Promise.reject(error);
-  } 
-);
-
 
 export default axiosInstance;
