@@ -8,8 +8,8 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
-  timeout: 10000, // 10 seconds timeout
-    withCredentials: true, // Include cookies in requests
+  timeout: 5000, // 
+    withCredentials: true 
 });
 
 axiosInstance.interceptors.request.use(
